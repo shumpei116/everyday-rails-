@@ -2,6 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Note, type: :model do
   
+  # ファクトリで関連するデータを生成する
+  it "generates associated data fram a factory" do
+    note = FactoryBot.create(:note)
+    puts "This note's projeft is #{note.project.inspect}"
+    puts "This note's user is #{note.user.inspect}"
+  end
+  
   # このファイルの全テストで使用するテストデータをセットアップする
   before do
     @user = User.create(
