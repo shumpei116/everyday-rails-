@@ -32,7 +32,7 @@ end
 
 group :test do
   gem 'capybara'
-  # gem 'launchy'
+  gem 'launchy'
   gem 'webdrivers'
 end
 

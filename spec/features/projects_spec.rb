@@ -26,6 +26,7 @@ RSpec.feature "Projects", type: :feature do
   # ゲストがプロジェクトを追加する
   # scenario "guest adds a project" do
   #   visit projects_path
+  #   save_and_open_page
   #   click_link "New Project"
   # end
 end
