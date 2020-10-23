@@ -1,19 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe TasksController, type: :controller do
-  
-  before do
-    @user = FactoryBot.create(:user)
-    @project = FactoryBot.create(:project, owner: @user)
-    @task = @project.tasks.create!(name: "Test Task")
-  end
+  include_context "project setup"
+  # beforeをletに書き換える
+  # before do
+  #   @user = FactoryBot.create(:user)
+  #   @project = FactoryBot.create(:project, owner: @user)
+  #   @task = @project.tasks.create!(name: "Test Task")
+  # end
   
   describe "#show" do
     # JSON形式でレスポンスを返すこと
     it "responds with JSON formatted output" do
-      sign_in @user
-      get :show, format: :json, params: {project_id: @project.id, id: @task.id}
-      expect(response.content_type).to eq "application/json"
+      sign_in user
+      get :show, format: :json, params: {project_id: project.id, id: task.id}
+      expect(response).to have_content_type :json
     end
   end
   
@@ -21,18 +22,18 @@ RSpec.describe TasksController, type: :controller do
     # JSON形式でレスポンスを返すこと
     it "respnds with JSON formatted output" do
       new_task = {name: "New test task"}
-      sign_in @user
-      post :create, format: :json, params: {project_id: @project.id, task: new_task}
-      expect(response.content_type).to eq "application/json"
+      sign_in user
+      post :create, format: :json, params: {project_id: project.id, task: new_task}
+      expect(response).to have_content_type :json
     end
     
     # 新しいタスクをプロジェクトに追加すること
     it "adds a new task to the project" do
       new_task = {name: "New test task"}
-      sign_in @user
+      sign_in user
       expect{
-        post :create, format: :json, params: {project_id: @project.id, task: new_task}
-      }.to change(@project.tasks, :count).by(1)
+        post :create, format: :json, params: {project_id: project.id, task: new_task}
+      }.to change(project.tasks, :count).by(1)
     end
     
     # 認証を要求すること
@@ -40,8 +41,8 @@ RSpec.describe TasksController, type: :controller do
       new_task = {name: "New test task"}
       # ここではあえてログインしない
       expect{
-        post :create, format: :json, params: {project_id: @project.id, task: new_task}
-      }.to_not change(@project.tasks, :count)
+        post :create, format: :json, params: {project_id: project.id, task: new_task}
+      }.to_not change(project.tasks, :count)
       expect(response).to_not be_success
     end
   end

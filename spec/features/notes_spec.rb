@@ -6,11 +6,8 @@ RSpec.feature "Notes", type: :feature do
     user = FactoryBot.create(:user)
     project = FactoryBot.create(:project, name: "Note Test", owner: user)
     
+    sign_in user
     visit root_path
-    click_link "Sign in"
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_button "Log in"
     
     expect{
      click_link "Note Test"
@@ -27,11 +24,8 @@ RSpec.feature "Notes", type: :feature do
     user = FactoryBot.create(:user)
     project = FactoryBot.create(:project, name: "Note Test", owner: user)
     
+    sign_in user
     visit root_path
-    click_link "Sign in"
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_button "Log in"
     
     click_link "Note Test"
     click_link "Add Note"
@@ -49,7 +43,6 @@ RSpec.feature "Notes", type: :feature do
     click_link "Back to Note Test"
     
     expect(page).to have_content "Test Note"
-    save_and_open_page
     expect(page).to have_content "hello"
 
   end
