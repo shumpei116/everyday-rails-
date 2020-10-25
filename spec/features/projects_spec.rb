@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.feature "Projects", type: :feature do
+  
   let(:user) { FactoryBot.create(:user) }
+  
   # ユーザーは新しいプロジェクトを作成する
   scenario "user creates a new project" do
     # Deviceが提供しているヘルパーを使う場合

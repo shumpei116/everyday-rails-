@@ -77,5 +77,8 @@ RSpec.describe Project, type: :model do
     project = FactoryBot.create(:project, :with_notes)
     expect(project.notes.length).to eq 5
   end
+  
+  # Shoulda Matchersを使用したテスト
+  it { is_expected.to validate_uniqueness_of(:name).scoped_to(:user_id) }
     
 end

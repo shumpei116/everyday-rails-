@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Note, type: :model do
   
   # ファクトリで関連するデータを生成する
-  it "generates associated data fram a factory" do
+  it "generates associated data fram a factory"  do
     note = FactoryBot.create(:note)
     puts "This note's projeft is #{note.project.inspect}"
     puts "This note's user is #{note.user.inspect}"
@@ -106,4 +106,19 @@ RSpec.describe Note, type: :model do
       end
     end
   end
+    
+    # 名前の取得をメモを作成したユーザーに以上すること
+    # it "delegates name to the user who created it" do
+    #   user = FactoryBot.create(:user, first_name: "Fake", last_name: "User")
+    #   note = Note.new(user: user)
+    #   expect(note.user_name).to eq "Fake User"
+    # end
+    # ↓↓↓モックとスタブを使った修正バージョン
+  it "delegates name to the user who created it" do
+    user = double("User", name: "Fake User")
+    note = Note.new
+    allow(note).to receive(:user).and_return(user)
+    expect(note.user_name).to eq "Fake User"
+  end
 end
+
