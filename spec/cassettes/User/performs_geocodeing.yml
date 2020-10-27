@@ -1,0 +1,65 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://ipinfo.io/161.185.207.20/geo
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 26 Oct 2020 20:46:19 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Powered-By:
+      - Express
+      X-Cloud-Trace-Context:
+      - 6b53bf373d53d3e0e618b2a84dd2abda/2445535835472568252
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Frame-Options:
+      - DENY
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Set-Cookie:
+      - flash=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT
+      Via:
+      - 1.1 google
+      Expires:
+      - Mon, 26 Oct 2020 20:46:19 GMT
+      Cache-Control:
+      - private
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        {
+          "ip": "161.185.207.20",
+          "city": "New York City",
+          "region": "New York",
+          "country": "US",
+          "loc": "40.7143,-74.0060",
+          "postal": "10004",
+          "timezone": "America/New_York",
+          "readme": "https://ipinfo.io/missingauth"
+        }
+  recorded_at: Mon, 26 Oct 2020 20:46:19 GMT
+recorded_with: VCR 6.0.0

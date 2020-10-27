@@ -12,19 +12,8 @@ RSpec.describe Note, type: :model do
   # このファイルの全テストで使用するテストデータをセットアップする
   let(:user) { FactoryBot.create(:user) }
   let(:project) { FactoryBot.create(:project, owner: user) }
-  # before をletに置き換える
-  # before do
-  #   @user = User.create(
-  #         first_name: "Joe",
-  #         last_name:  "Tester",
-  #         email:       "joetester@example.com",
-  #         password:   "dottle-nouveau-pavilion-tights-furze"
-  #         )
-    
-  #   @project = @user.projects.create(
-  #     name:"Test Project"
-  #     )
-  # end
+  
+  it { is_expected.to have_attached_file(:attachment) }
     
   # ユーザー、プロフェクト、メッセージがあれば有効な状態であること
   it "is valid with a user, project, and message" do
@@ -69,23 +58,6 @@ RSpec.describe Note, type: :model do
       user: user,
       message: "First,preheat the oven")
     }
-    # beforeをletに置き換える
-    # before do
-    #   @note1 = @project.notes.create(
-    #       message: "This is the first note",
-    #       user: @user
-    #       )
-        
-    #   @note2 = @project.notes.create(
-    #     message: "This is the second note",
-    #     user: @user
-    #     )
-      
-    #   @note3 = @project.notes.create(
-    #     message: "First,preheat the oven",
-    #     user: @user
-    #     )
-    # end
     
     # 一致するデータが見つかるとき
     context "when a match is found" do
@@ -107,7 +79,7 @@ RSpec.describe Note, type: :model do
     end
   end
     
-    # 名前の取得をメモを作成したユーザーに以上すること
+    # 名前の取得をメモを作成したユーザーに移譲すること
     # it "delegates name to the user who created it" do
     #   user = FactoryBot.create(:user, first_name: "Fake", last_name: "User")
     #   note = Note.new(user: user)

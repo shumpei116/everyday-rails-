@@ -1,10 +1,14 @@
 require 'rails_helper'
 
 RSpec.feature "Notes", type: :feature do
+  
+  let(:user) { FactoryBot.create(:user) }
+  let!(:project) { FactoryBot.create(:project, name: "Note Test", owner: user) }
+  
   # ユーザーが新しいノートを作成する
   scenario "ノートを作成する" do
-    user = FactoryBot.create(:user)
-    project = FactoryBot.create(:project, name: "Note Test", owner: user)
+    # user = FactoryBot.create(:user)
+    # project = FactoryBot.create(:project, name: "Note Test", owner: user)
     
     sign_in user
     visit root_path
@@ -21,8 +25,8 @@ RSpec.feature "Notes", type: :feature do
   end
   
    scenario "ノートを検索する" do
-    user = FactoryBot.create(:user)
-    project = FactoryBot.create(:project, name: "Note Test", owner: user)
+    # user = FactoryBot.create(:user)
+    # project = FactoryBot.create(:project, name: "Note Test", owner: user)
     
     sign_in user
     visit root_path
@@ -45,5 +49,19 @@ RSpec.feature "Notes", type: :feature do
     expect(page).to have_content "Test Note"
     expect(page).to have_content "hello"
 
+  end
+  
+  # ユーザーが添付ファイルをアップロードする
+  scenario "user uploads an attachment" do
+    
+    sign_in user
+    visit project_path(project)
+    click_link "Add Note"
+    fill_in "Message", with: "My book cover"
+    attach_file "Attachment", "#{Rails.root}/spec/files/attachment.jpg"
+    click_button "Create Note"
+    expect(page).to have_content "Note was successfully created."
+    expect(page).to have_content "My book cover"
+    expect(page).to have_content "attachment.jpg (image/jpeg"
   end
 end
