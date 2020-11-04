@@ -1,0 +1,10 @@
+<h1>Completed projects</h1>
+
+<% @projects.each do |project| %>
+  <h2><%= link_to project.name, project %></h2>
+  <p><%= link_to "<復元する>", unfinished_project_path(project), method: :patch, data: { confirm: "You sure?" } %></p>
+  
+  <p>
+    <%= project.description %>
+  </p>
+<% end %>

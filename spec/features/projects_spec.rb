@@ -47,4 +47,75 @@ RSpec.feature "Projects", type: :feature do
     expect(page).to have_content "Due: December 31, 2021"
     
   end
+  
+  # ユーザーはプロジェクトを完了済みにする
+  scenario "user completes a project" do
+    # プロジェクトをもったユーザーを準備する
+    user = FactoryBot.create(:user)
+    project = FactoryBot.create(:project, name: "test project", owner: user)
+    # ユーザーはログインしている
+    sign_in user
+    # ユーザーがプロジェクト画面を開き
+    visit project_path(project)
+    expect(page).to_not have_content "Completed"
+    # "complete"ボタンをクリックすると
+    click_button "Complete"
+    # プロジェクトは完了済としてマークされる
+    expect(project.reload.completed?).to be true
+    expect(page).to have_content "Congratulations, this project is complete!"
+    expect(page).to have_content "Completed"
+    expect(page).to_not have_button "Complete"
+  end
+  
+  # 完了済のプロジェクトは非表示になる
+  scenario "完了済のプロジェクトは非表示になる" do
+    user = FactoryBot.create(:user, first_name: "ooyama", last_name: "shumpei")
+    # 完了済のプロジェクト
+    finish_project = FactoryBot.create(:project, name: "finish_project", owner: user, completed: true)
+    # 完了前のプロジェクト
+    project = FactoryBot.create(:project, name: "new_project", owner: user, completed: nil)
+    
+    # ログインする
+    sign_in user
+    visit projects_path
+    # 完了前のプロジェクトは表示されている
+    expect(page).to have_content "new_project"
+    # 完了済のプロジェクトは表示されていない
+    expect(page).to_not have_content "finish_project"
+  end
+  
+  # 完了済のプロジェクトは完了済プロジェクト一覧ページから復元できる
+  scenario "完了済みのプロジェクトは完了済プロジェクト一覧ページから復元できる" do
+    user = FactoryBot.create(:user, first_name: "ooyama", last_name: "shumpei")
+    # 完了済のプロジェクト
+    finish_project = FactoryBot.create(:project, name: "finish_project", owner: user, completed: true)
+    # 完了前のプロジェクト
+    project = FactoryBot.create(:project, name: "new_project", owner: user, completed: nil)
+    
+    # ログインする
+    sign_in user
+    # プロジェクト一覧ページにアクセス
+    visit projects_path
+    # 完了済のプロジェクトは表示されていない
+    expect(page).to_not have_content "finish_project"
+    # 完了済プロジェクトベージにアクセス
+    click_link "完了済プロジェクト一覧"
+    # 完了済のプロジェクトは表示されている
+    expect(page).to have_content "finish_project"
+    # 完了前のプロジェクトは表示されていない
+    expect(page).to_not have_content "new_project"
+    # 完了済のプロジェクトを復元する
+    click_link "復元する"
+    # 復元完了のフラッシュメッセージが表示される
+    expect(page).to have_content "Congratulations, this project is restore!"
+    # 完了済だったプロジェクトも表示されている
+    expect(page).to have_content "finish_project"
+    # 完了済プロジェクト一覧ページにアクセス
+    click_link "完了済プロジェクト一覧"
+    # 完了済だったプロジェクトは表示されていない
+    expect(page).to_not have_content "finish_project"
+    
+   
+  end
+  
 end

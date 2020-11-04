@@ -13,6 +13,15 @@ Rails.application.routes.draw do
         post :toggle
       end
     end
+    member do
+      patch :complete
+    end
+    member do
+      get :restore
+    end
+    member do
+      patch :unfinished
+    end
   end
 
   namespace :api do

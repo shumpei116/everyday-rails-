@@ -1,11 +1,11 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :complete, :restore, :unfinished]
   before_action :project_owner?, except: [:index, :new, :create]
 
   # GET /projects
   # GET /projects.json
   def index
-    @projects = current_user.projects
+    @projects = Project.where(user_id: current_user.id, completed: nil)
   end
 
   # GET /projects/1
@@ -59,6 +59,28 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+  # PATCH /projects/:id/complete
+  def complete
+    if @project.update_attributes!(completed: true)
+      redirect_to @project, notice: "Congratulations, this project is complete!"
+    else
+      redirect_to @project, alert:  "Unable to complete project."
+    end
+  end
+  
+  # GET /projects/:id/restore
+  def restore
+    @projects = Project.where(user_id: current_user.id, completed: true)
+  end
+  
+  # patch /projects/:id/unfinished
+  def unfinished
+    if @project.update_attributes!(completed: nil)
+      redirect_to projects_path(current_user), notice: "Congratulations, this project is restore!"
+    else
+      render unfinished_project_path(current_user), notice: "Unable to complete restore."
     end
   end
 

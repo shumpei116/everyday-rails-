@@ -8,4 +8,5 @@ class Project < ApplicationRecord
   def late?
     due_on.in_time_zone < Date.current.in_time_zone
   end
+
 end
